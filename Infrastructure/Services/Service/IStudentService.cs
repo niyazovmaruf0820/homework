@@ -1,5 +1,5 @@
 using Domain.DTOs.GroupDto;
-using Domain.DTOs.StudentDTO;
+using Domain.DTOs.StudentDto;
 using Domain.Entities;
 using Domain.Filter;
 using Domain.Responses;
@@ -14,4 +14,5 @@ public interface IStudentService
     Task<Response<string>> CreateStudentAsync(AddStudentDto student);
     Task<Response<string>> UpdateStudentAsync(UpdateStudentDto student);
     Task<Response<bool>> DeleteStudentAsync(int id);
+    Task<PagedResponse<List<GetStudentDto>>> GetStudentsbyGroup(string groupName,StudentFilter filter);
 }

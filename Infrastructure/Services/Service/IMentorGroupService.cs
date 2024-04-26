@@ -4,7 +4,7 @@ using Domain.Responses;
 
 namespace Infrastructure.Services.Service;
 
-public interface IMentorMentorGroupService
+public interface IMentorGroupService
 {
     Task<PagedResponse<List<GetMentorGroupDto>>> GetMentorGroupsAsync(MentorGroupFilter filter);
     Task<Response<GetMentorGroupDto>> GetMentorGroupByIdAsync(int id);

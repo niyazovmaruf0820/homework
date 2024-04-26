@@ -1,5 +1,5 @@
 using AutoMapper;
-using Domain.DTOs.StudentDTO;
+using Domain.DTOs.StudentDto;
 using Domain.Entities;
 
 namespace Infrastructure.AutoMapper;
@@ -11,6 +11,7 @@ public class MapperProfile:Profile
         CreateMap<Student, AddStudentDto>().ReverseMap();
         CreateMap<Student, GetStudentDto>().ReverseMap();
         CreateMap<Student, UpdateStudentDto>().ReverseMap();
+        
         
         // //ForMembers
         // CreateMap< Student,GetStudentDto>()

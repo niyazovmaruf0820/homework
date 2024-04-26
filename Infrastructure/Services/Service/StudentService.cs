@@ -2,7 +2,7 @@ using System.Data.Common;
 using System.Net;
 using AutoMapper;
 using Domain.DTOs.GroupDto;
-using Domain.DTOs.StudentDTO;
+using Domain.DTOs.StudentDto;
 using Domain.Entities;
 using Domain.Filter;
 using Domain.Responses;
@@ -23,7 +23,7 @@ public class StudentService : IStudentService
         _context = context;
         _mapper = mapper;
     }
-    
+
 
     #endregion
 
@@ -64,17 +64,17 @@ public class StudentService : IStudentService
         try
         {
             var existing = await (from g in _context.Groups
-                let count = _context.StudentGroups.Count(x => x.GroupId == g.Id)
-                select new GroupWithCountOfStudentDto
-                {
-                    Group = g,
-                    CountOfStudents = count
-                }).ToListAsync();
+                                  let count = _context.StudentGroups.Count(x => x.GroupId == g.Id)
+                                  select new GroupWithCountOfStudentDto
+                                  {
+                                      Group = g,
+                                      CountOfStudents = count
+                                  }).ToListAsync();
             return new Response<List<GroupWithCountOfStudentDto>>(existing);
         }
         catch (Exception e)
         {
-            return new Response<List<GroupWithCountOfStudentDto>>(HttpStatusCode.InternalServerError,e.Message);
+            return new Response<List<GroupWithCountOfStudentDto>>(HttpStatusCode.InternalServerError, e.Message);
         }
     }
 
@@ -133,7 +133,7 @@ public class StudentService : IStudentService
             var mappedStudent = _mapper.Map<Student>(student);
             _context.Students.Update(mappedStudent);
             var update = await _context.SaveChangesAsync();
-            if(update==0)  return new Response<string>(HttpStatusCode.BadRequest, "Student not found");
+            if (update == 0) return new Response<string>(HttpStatusCode.BadRequest, "Student not found");
             return new Response<string>("Student updated successfully");
         }
         catch (Exception e)
@@ -163,5 +163,35 @@ public class StudentService : IStudentService
     }
 
     #endregion
+
+    public async Task<PagedResponse<List<GetStudentDto>>> GetStudentsbyGroup(string groupName, StudentFilter filter)
+    {
+        try
+        {
+            var students = from s in _context.Students
+                          join sg in _context.StudentGroups on s.Id equals sg.StudentId
+                          where sg.Group.GroupName == groupName
+                          select s;
+
+
+            if (!string.IsNullOrEmpty(filter.Address))
+                students = students.Where(x => x.Address.ToLower().Contains(filter.Address.ToLower()));
+            if (!string.IsNullOrEmpty(filter.Email))
+                students = students.Where(x => x.Email.ToLower().Contains(filter.Email.ToLower()));
+
+            var response = await students
+                .Skip((filter.PageNumber - 1) * filter.PageSize)
+                .Take(filter.PageSize).ToListAsync();
+            var totalRecord = students.Count();
+
+            var mapped = _mapper.Map<List<GetStudentDto>>(response);
+
+            return new PagedResponse<List<GetStudentDto>>(mapped,filter.PageNumber,filter.PageSize,totalRecord);
+        }
+        catch (Exception e)
+        {
+            return new PagedResponse<List<GetStudentDto>>(HttpStatusCode.InternalServerError, e.Message);
+        }
+    }
 }
 

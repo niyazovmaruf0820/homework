@@ -1,4 +1,4 @@
-namespace Domain.DTOs.StudentDTO;
+namespace Domain.DTOs.StudentDto;
 
 public class GetStudentDto
 {

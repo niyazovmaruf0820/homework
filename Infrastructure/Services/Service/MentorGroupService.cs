@@ -79,13 +79,13 @@ public class MentorGroupService : IMentorMentorGroupService
         {
             var mentorGroup = _context.MentorGroups.AsQueryable();
 
-            if (filter.MentorId != null)
+            if (filter?.MentorId != null)
                 mentorGroup = mentorGroup.Where(x => x.MentorId == filter.MentorId);
-            if (filter.GroupId != null) 
+            if (filter?.GroupId != null) 
                 mentorGroup = mentorGroup.Where(x => x.GroupId == filter.GroupId);
 
             var response = await mentorGroup
-                .Skip((filter.PageNumber - 1) * filter.PageSize)
+                .Skip((filter!.PageNumber - 1) * filter.PageSize)
                 .Take(filter.PageSize).ToListAsync();
             var totalRecord = mentorGroup.Count();
 

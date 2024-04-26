@@ -1,6 +1,6 @@
 using Domain.Enums;
 
-namespace Domain.DTOs.StudentDTO;
+namespace Domain.DTOs.StudentDto;
 
 public class UpdateStudentDto
 {

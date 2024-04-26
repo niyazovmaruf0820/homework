@@ -1,7 +1,5 @@
-using System.Net;
 using Domain.DTOs.GroupDto;
-using Domain.DTOs.StudentDTO;
-using Domain.Entities;
+using Domain.DTOs.StudentDto;
 using Domain.Filter;
 using Domain.Responses;
 using Infrastructure.Services.StudentService;
@@ -18,6 +16,12 @@ public class StudentController:ControllerBase
     {
         _studentService = studentService;
     }
+    [HttpGet("get-groups-with-count-student")]
+    public async Task<Response<List<GroupWithCountOfStudentDto>>> GetGroupWithCountStudent( )
+    {
+        return await _studentService.GetStudentWithCountOfStudentDtoAsync();
+        // return new Response<List<GetStudentDto>>(HttpStatusCode.OK,"Success");
+    }
 
     [HttpGet("get-students")]
     public async Task<PagedResponse<List<GetStudentDto>>> GetStudentsAsync([FromQuery]StudentFilter filter)
@@ -25,13 +29,12 @@ public class StudentController:ControllerBase
         return await _studentService.GetStudentsAsync(filter);
         // return new Response<List<GetStudentDto>>(HttpStatusCode.OK,"Success");
     }
-    
-    [HttpGet("get-groups-with-count-student")]
-    public async Task<Response<List<GroupWithCountOfStudentDto>>> GetGroupWithCountStudent( )
+    [HttpGet("get-GetStudentsbyGroup")]
+    public async Task<PagedResponse<List<GetStudentDto>>> GetStudentsbyGroup(string name,[FromQuery]StudentFilter filter)
     {
-        return await _studentService.GetStudentWithCountOfStudentDtoAsync();
-        // return new Response<List<GetStudentDto>>(HttpStatusCode.OK,"Success");
+        return await _studentService.GetStudentsbyGroup(name,filter);
     }
+    
     
     [HttpGet("{studentId:int}")]
     public async Task<Response<GetStudentDto>> GetStudentByIdAsync([FromBody]int studentId)

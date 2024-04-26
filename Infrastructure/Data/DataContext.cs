@@ -13,6 +13,8 @@ public class DataContext:DbContext
     public DbSet<Mentor> Mentors { get; set; } 
     public DbSet<StudentGroup> StudentGroups { get; set; }
     public DbSet<MentorGroup> MentorGroups { get; set; } 
+    public DbSet<TimeTable> TimeTables { get; set; } 
+    public DbSet<ProgressBook> ProgressBooks { get; set; } 
     
     protected override void OnModelCreating(ModelBuilder builder)
     {

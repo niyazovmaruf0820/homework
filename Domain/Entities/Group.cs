@@ -13,5 +13,6 @@ public class Group:BaseEntity
     public Course? Course { get; set; }
     public List<StudentGroup>? StudentGroups { get; set; }
     public List<MentorGroup>? MentorGroups { get; set; }
+    public List<ProgressBook>? ProgressBooks { get; set; }
    
 }
